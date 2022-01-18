@@ -1,0 +1,39 @@
+# 将 nginx 容器的别名写到 docker 支持的 docker-compose.override.yml 中，使 vagrant 可以使用此配置
+version: "3.4"
+
+services:
+  nginx:
+    networks:
+      default:
+        # 为 nginx 容器指定别名
+        aliases:
+          - test.class.sanjieke.cn
+          - test.service.sanjieke.cn
+          - test.i.service.sanjieke.cn
+          - wechat.test.sanjieke.cn
+          - marketing.test.api.3jk.ink
+          - test.i.marketing.sanjieke.cn
+          - app-admin.test.api.3jk.ink
+          - app-push.test.api.3jk.ink
+          - coco-web.test.api.3jk.ink
+          - trade.test.api.3jk.ink
+          - trade.i.test.3jk.ink
+          - test.trade.api.3jk.ink
+          - banban-web.test.api.3jk.ink
+          - cashier.i.test.3jk.ink
+          - survey.test.api.3jk.ink
+          - admin-web.test.api.3jk.ink
+          - classroom-web.test.api.3jk.ink
+          - test.www.sanjieke.cn
+          - mall-aggregation.test.api.3jk.ink
+          - user.test.api.3jk.ink
+          - student.test.api.3jk.ink
+          - test.student.api.3jk.ink
+          - cms.test.api.3jk.ink
+          - test.cms.api.3jk.ink
+          - test.school-web.api.3jk.ink
+          - scrm.test.api.3jk.ink
+          - live.test.api.3jk.ink
+          - security.test.api.3jk.ink
+          - token.test.api.3jk.ink
+          - circle.test.api.3jk.ink

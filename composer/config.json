@@ -1,0 +1,22 @@
+{
+    "config": {},
+    "repositories": {
+        "0": {
+            "type": "composer",
+            "url": "https://composer.firstleap.cn/repo/private/"
+        },
+        "1": {
+            "type": "composer",
+            "url": "https://mirrors.aliyun.com/composer/"
+        },
+        "packagist.org": false,
+        "packagist": {
+            "type": "composer",
+            "url": "https://packagist.phpcomposer.com"
+        },
+        "leap": {
+            "type": "composer",
+            "url": "https://composer.firstleap.cn/repo/private/"
+        }
+    }
+}

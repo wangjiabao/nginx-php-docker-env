@@ -1,0 +1,133 @@
+version: "3.4"
+
+x-subnet: &subnet "10.1.0.0/24"
+
+x-volumes:
+  &default-volume
+  - "$SJK_WEBROOT:/data/webroot:cached"
+  - "$SJK_WEBROOT/dev-env/logs:/data/logs:delegated"
+  - "$SJK_WEBROOT/dev-env/composer:/data/composer:delegated"
+  - "$SJK_WEBROOT/dev-env/system:/data/webroot/system"
+  - "$SJK_WEBROOT/dev-env/system/system-$SJK_DATABASE.ini:/data/webroot/system/system.ini"
+
+x-default-env:
+  &default-env
+  - "XDEBUG_CONFIG=remote_enable=1 remote_host=$XDEBUG_REMOTE_HOST remote_port=$XDEBUG_REMOTE_PORT"
+  - "TZ=Asia/Shanghai"
+  - "COMPOSER_HOME=/data/composer"
+#  - "PHP_IDE_CONFIG=serverName=dev-env"
+
+services:
+  redis:
+    image: redis:4-alpine
+    networks:
+      default:
+        aliases:
+          - redis.local
+
+  php-70:
+    image: dev/php-70
+    build:
+      context: php/
+      dockerfile: 7.0/stretch.dockerfile
+    volumes: *default-volume
+    environment: *default-env
+    networks:
+      default:
+        aliases:
+          - php-fpm-70
+    depends_on:
+      - redis
+
+  php-71:
+    image: dev/php-71
+    build:
+      context: php/
+      dockerfile: 7.1/fpm-alpine.dockerfile
+    volumes: *default-volume
+    environment: *default-env
+    networks:
+      default:
+        aliases:
+          - php-fpm-71
+    depends_on:
+      - redis
+
+  php-72:
+    image: dev/php-72
+    build:
+      context: php/
+      dockerfile: 7.2/fpm-alpine.dockerfile
+    volumes: *default-volume
+    environment: *default-env
+    networks:
+      default:
+        aliases:
+          - php-fpm-72
+    depends_on:
+      - redis
+
+  php-73:
+    image: dev/php-73
+    build:
+      context: php/
+      dockerfile: 7.3/fpm-alpine.dockerfile
+    volumes: *default-volume
+    environment: *default-env
+    networks:
+      default:
+        aliases:
+          - php-fpm-73
+    depends_on:
+      - redis
+
+  php-73-cli:
+    image: dev/php-73-cli
+    build:
+      context: php/
+      dockerfile: 7.3/cli-alpine.dockerfile
+    volumes: *default-volume
+    environment: *default-env
+    ports:
+      - '9501:9501'
+      - '9502:9502'
+    networks:
+      default:
+        aliases:
+          - php-73-cli
+    depends_on:
+      - redis
+
+  php-80:
+    image: dev/php-8
+    build:
+      context: php/
+      dockerfile: 8.0/fpm-alpine.dockerfile
+    volumes: *default-volume
+    environment: *default-env
+    networks:
+      default:
+        aliases:
+          - php-fpm-80
+    depends_on:
+      - redis
+
+  nginx:
+    build:
+      context: nginx
+      dockerfile: buster.dockerfile
+    volumes: *default-volume
+    environment: *default-env
+    ports:
+      - '80:80'
+    depends_on:
+      - php-70
+      - php-71
+      - php-73
+      - php-80
+
+networks:
+  default:
+    ipam:
+      config:
+        - subnet: *subnet
